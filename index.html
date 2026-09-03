@@ -1,0 +1,1355 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lumière — Premier Cinematic Experience</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                black: "#000000",
+                white: "#FFFFFF",
+                navy: "#14213D",
+                gray: "#E5E5E5",
+                accent: "#FCA311",
+              },
+            },
+            fontFamily: {
+              sans: ["Plus Jakarta Sans", "Inter", "sans-serif"],
+              serif: ["Playfair Display", "serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Fonts & Google Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <style>
+      /* Custom Scrollbar & Aesthetic Overrides */
+      ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #000000;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #14213d;
+        border-radius: 9999px;
+      }
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* Social Story Ring Glow */
+      .story-ring {
+        background: linear-gradient(135deg, #fca311, #14213d, #fca311);
+        padding: 2px;
+      }
+
+      /* Glassmorphism Effect */
+      .glass-nav {
+        background: rgba(0, 0, 0, 0.82);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+      .glass-card {
+        background: rgba(20, 33, 61, 0.4);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(229, 229, 229, 0.08);
+      }
+
+      /* Material Symbols Custom Styling */
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 300,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .material-symbols-outlined.fill {
+        font-variation-settings:
+          "FILL" 1,
+          "wght" 300,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-brand-black text-brand-white font-sans antialiased selection:bg-brand-accent selection:text-brand-black min-h-screen flex justify-center"
+  >
+    <!-- Mobile Simulator Container (Responsive max-w-md frame on desktop, full width on mobile) -->
+    <div
+      class="w-full max-w-md min-h-screen bg-brand-black border-x border-brand-navy/30 relative flex flex-col justify-between shadow-2xl pb-20"
+    >
+      <!-- Top Header Bar -->
+      <header
+        class="sticky top-0 z-40 glass-nav border-b border-brand-navy/30 px-5 py-4 flex items-center justify-between"
+      >
+        <div class="flex items-center gap-2">
+          <span
+            class="text-xs tracking-[0.3em] font-light text-brand-accent uppercase"
+            >V I P</span
+          >
+          <h1
+            class="text-xl font-bold tracking-widest text-brand-white uppercase font-sans"
+          >
+            LUMIÈRE
+          </h1>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- Concierge / Direct Message Quick Action -->
+          <button
+            onclick="openConcierge()"
+            class="p-2 rounded-full hover:bg-brand-navy/50 transition-colors relative"
+            aria-label="VIP Concierge"
+          >
+            <span class="material-symbols-outlined text-brand-gray text-xl"
+              >chat_bubble_outline</span
+            >
+            <span
+              class="absolute top-1 right-1 w-2 h-2 bg-brand-accent rounded-full animate-ping"
+            ></span>
+            <span
+              class="absolute top-1 right-1 w-2 h-2 bg-brand-accent rounded-full"
+            ></span>
+          </button>
+
+          <!-- Menu Drawer Trigger -->
+          <button
+            onclick="toggleMenu()"
+            class="p-2 rounded-full bg-brand-navy/40 hover:bg-brand-navy text-brand-white transition-all border border-brand-gray/10"
+            aria-label="Open Menu"
+          >
+            <span class="material-symbols-outlined text-xl">menu</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Slide-out Menu Overlay -->
+      <div
+        id="sideMenu"
+        class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300 flex justify-end"
+      >
+        <div
+          id="sideMenuContent"
+          class="w-4/5 max-w-xs bg-brand-black h-full border-l border-brand-navy/50 p-6 flex flex-col justify-between transform translate-x-full transition-transform duration-300"
+        >
+          <div>
+            <div class="flex justify-between items-center mb-8">
+              <span
+                class="text-xs uppercase tracking-[0.25em] text-brand-accent"
+                >Menu</span
+              >
+              <button
+                onclick="toggleMenu()"
+                class="p-2 rounded-full hover:bg-brand-navy text-brand-gray"
+              >
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+
+            <!-- Menu Links -->
+            <nav class="space-y-6">
+              <a
+                href="#"
+                onclick="toggleMenu()"
+                class="flex items-center gap-4 text-brand-white text-lg font-light hover:text-brand-accent transition-colors"
+              >
+                <span class="material-symbols-outlined text-brand-accent"
+                  >movie</span
+                >
+                Now Showing
+              </a>
+              <a
+                href="#"
+                onclick="
+                  toggleMenu();
+                  switchTab('experience');
+                "
+                class="flex items-center gap-4 text-brand-white text-lg font-light hover:text-brand-accent transition-colors"
+              >
+                <span class="material-symbols-outlined text-brand-accent"
+                  >chair_alt</span
+                >
+                Private Suites & Lounges
+              </a>
+              <a
+                href="#"
+                onclick="
+                  toggleMenu();
+                  openCatering();
+                "
+                class="flex items-center gap-4 text-brand-white text-lg font-light hover:text-brand-accent transition-colors"
+              >
+                <span class="material-symbols-outlined text-brand-accent"
+                  >wine_bar</span
+                >
+                Sommelier & Fine Dining
+              </a>
+              <a
+                href="#"
+                onclick="
+                  toggleMenu();
+                  switchTab('profile');
+                "
+                class="flex items-center gap-4 text-brand-white text-lg font-light hover:text-brand-accent transition-colors"
+              >
+                <span class="material-symbols-outlined text-brand-accent"
+                  >star</span
+                >
+                Membership Tier: Black Card
+              </a>
+              <a
+                href="#"
+                onclick="toggleMenu()"
+                class="flex items-center gap-4 text-brand-white text-lg font-light hover:text-brand-accent transition-colors"
+              >
+                <span class="material-symbols-outlined text-brand-accent"
+                  >location_on</span
+                >
+                Private Valet & Location
+              </a>
+            </nav>
+          </div>
+
+          <div class="border-t border-brand-navy/50 pt-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 rounded-full bg-brand-navy flex items-center justify-center font-bold text-brand-accent text-sm"
+              >
+                JS
+              </div>
+              <div>
+                <p class="text-sm font-medium text-brand-white">
+                  Julian Sterling
+                </p>
+                <p class="text-xs text-brand-gray/60">Lumière Elite Member</p>
+              </div>
+            </div>
+            <p
+              class="text-[10px] text-brand-gray/40 text-center tracking-widest uppercase"
+            >
+              © 2026 LUMIÈRE CINEMATIQUE
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Container -->
+      <main class="flex-1 overflow-y-auto hide-scrollbar pb-6">
+        <!-- STORIES BAR (Social Media Style Premieres / Highlights) -->
+        <section class="py-4 border-b border-brand-navy/30 px-4">
+          <div class="flex gap-4 overflow-x-auto hide-scrollbar items-center">
+            <!-- Story 1: Premiere -->
+            <button
+              onclick="
+                openStory(
+                  'Dune: Part Three',
+                  'Exclusive Premiere Night & Caviar Tasting',
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQMclxHtI4xz2lOV6beIuErjYLWmcMV_a3CbCf06yhl4bkZRxt5hPZRFZr&s=10',
+                )
+              "
+              class="flex flex-col items-center gap-1 min-w-[68px] focus:outline-none"
+            >
+              <div class="story-ring rounded-full">
+                <div
+                  class="w-14 h-14 rounded-full overflow-hidden border-2 border-brand-black"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=200&auto=format&fit=crop"
+                    class="w-full h-full object-cover"
+                    alt="Dune"
+                  />
+                </div>
+              </div>
+              <span
+                class="text-[10px] font-medium text-brand-gray truncate w-16 text-center"
+                >Premieres</span
+              >
+            </button>
+
+            <!-- Story 2: Wine Tasting -->
+            <button
+              onclick="
+                openStory(
+                  'Vintage 2015 Champagne',
+                  'Curated by Master Sommelier Laurent',
+                  'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop',
+                )
+              "
+              class="flex flex-col items-center gap-1 min-w-[68px] focus:outline-none"
+            >
+              <div class="story-ring rounded-full">
+                <div
+                  class="w-14 h-14 rounded-full overflow-hidden border-2 border-brand-black"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=200&auto=format&fit=crop"
+                    class="w-full h-full object-cover"
+                    alt="Wine"
+                  />
+                </div>
+              </div>
+              <span
+                class="text-[10px] font-medium text-brand-gray truncate w-16 text-center"
+                >Sommelier</span
+              >
+            </button>
+
+            <!-- Story 3: Recliner Suites -->
+            <button
+              onclick="
+                openStory(
+                  'Royal Suite 01',
+                  'Italian Leather Full-Recline Pods',
+                  'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=600&auto=format&fit=crop',
+                )
+              "
+              class="flex flex-col items-center gap-1 min-w-[68px] focus:outline-none"
+            >
+              <div class="story-ring rounded-full">
+                <div
+                  class="w-14 h-14 rounded-full overflow-hidden border-2 border-brand-black"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=200&auto=format&fit=crop"
+                    class="w-full h-full object-cover"
+                    alt="Suites"
+                  />
+                </div>
+              </div>
+              <span
+                class="text-[10px] font-medium text-brand-gray truncate w-16 text-center"
+                >Suites</span
+              >
+            </button>
+
+            <!-- Story 4: Dolby Atmos Premier -->
+            <button
+              onclick="
+                openStory(
+                  'Acoustics',
+                  'Custom Acoustical Engineering',
+                  'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop',
+                )
+              "
+              class="flex flex-col items-center gap-1 min-w-[68px] focus:outline-none"
+            >
+              <div class="p-[2px] bg-brand-navy/60 rounded-full">
+                <div
+                  class="w-14 h-14 rounded-full overflow-hidden border-2 border-brand-black"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=200&auto=format&fit=crop"
+                    class="w-full h-full object-cover"
+                    alt="Sound"
+                  />
+                </div>
+              </div>
+              <span
+                class="text-[10px] font-medium text-brand-gray truncate w-16 text-center"
+                >Sound Tech</span
+              >
+            </button>
+          </div>
+        </section>
+
+        <!-- TAB CONTENT: MOVIES / FEED -->
+        <div id="tab-movies" class="tab-content space-y-8 mt-4">
+          <!-- Social Feed Style Movie Post 1 -->
+          <article class="border-b border-brand-navy/30 pb-6 px-4">
+            <!-- User / Cinema Header -->
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-9 h-9 rounded-full bg-brand-navy flex items-center justify-center border border-brand-accent/40 text-brand-accent text-xs font-bold"
+                >
+                  L
+                </div>
+                <div>
+                  <p
+                    class="text-xs font-semibold tracking-wider uppercase text-brand-white flex items-center gap-1"
+                  >
+                    Lumière Grand Screen 01
+                    <span
+                      class="material-symbols-outlined text-brand-accent text-sm fill"
+                      >verified</span
+                    >
+                  </p>
+                  <p class="text-[10px] text-brand-gray/60">
+                    Now Showing • 70mm IMAX Laser
+                  </p>
+                </div>
+              </div>
+              <button class="text-brand-gray/60 hover:text-brand-white">
+                <span class="material-symbols-outlined text-lg"
+                  >more_horiz</span
+                >
+              </button>
+            </div>
+
+            <!-- Movie Media Container with Double Tap Heart & Floating Badge -->
+            <div
+              class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-3 group cursor-pointer"
+              onclick="
+                openBookingModal(
+                  'Oppenheimer: Directors Cut',
+                  'IMAX 70mm',
+                  '$45.00',
+                )
+              "
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/en/4/4a/Oppenheimer_%28film%29.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                alt="Oppenheimer"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-black/20"
+              ></div>
+
+              <div
+                class="absolute top-4 right-4 bg-brand-black/60 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-semibold text-brand-accent border border-brand-accent/20"
+              >
+                LIMITED SHOWING
+              </div>
+
+              <div class="absolute bottom-4 left-4 right-4">
+                <span
+                  class="text-xs tracking-widest text-brand-accent uppercase font-medium"
+                  >Christopher Nolan</span
+                >
+                <h2
+                  class="text-2xl font-serif text-brand-white font-normal mt-0.5"
+                >
+                  Oppenheimer
+                </h2>
+                <p class="text-xs text-brand-gray/80 mt-1 line-clamp-2">
+                  Exclusive Extended Cut. Includes complimentary glass of Dom
+                  Pérignon upon entry.
+                </p>
+              </div>
+            </div>
+
+            <!-- Social Interactions & CTA -->
+            <div class="flex items-center justify-between mt-3">
+              <div class="flex items-center gap-4 text-brand-gray">
+                <button
+                  onclick="toggleLike(this)"
+                  class="flex items-center gap-1 hover:text-brand-accent transition-colors"
+                >
+                  <span class="material-symbols-outlined text-2xl icon-heart"
+                    >favorite_border</span
+                  >
+                  <span class="text-xs font-medium text-count">1.4k</span>
+                </button>
+                <button
+                  onclick="openComments('Oppenheimer')"
+                  class="flex items-center gap-1 hover:text-brand-white transition-colors"
+                >
+                  <span class="material-symbols-outlined text-2xl"
+                    >chat_bubble_outline</span
+                  >
+                  <span class="text-xs font-medium">84</span>
+                </button>
+                <button
+                  onclick="shareMovie('Oppenheimer')"
+                  class="hover:text-brand-white transition-colors"
+                >
+                  <span class="material-symbols-outlined text-2xl">send</span>
+                </button>
+              </div>
+
+              <!-- Primary Action Button -->
+              <button
+                onclick="
+                  openBookingModal(
+                    'Oppenheimer: Directors Cut',
+                    'IMAX 70mm',
+                    '$45.00',
+                  )
+                "
+                class="bg-brand-accent text-brand-black px-5 py-2.5 rounded-full font-semibold text-xs tracking-wide uppercase hover:bg-yellow-400 transition-all shadow-lg shadow-brand-accent/10 flex items-center gap-1.5 active:scale-95"
+              >
+                <span>Reserve Suite</span>
+                <span class="material-symbols-outlined text-sm"
+                  >arrow_forward</span
+                >
+              </button>
+            </div>
+          </article>
+
+          <!-- Social Feed Style Movie Post 2 -->
+          <article class="border-b border-brand-navy/30 pb-6 px-4">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-9 h-9 rounded-full bg-brand-navy flex items-center justify-center border border-brand-accent/40 text-brand-accent text-xs font-bold"
+                >
+                  L
+                </div>
+                <div>
+                  <p
+                    class="text-xs font-semibold tracking-wider uppercase text-brand-white flex items-center gap-1"
+                  >
+                    Lumière Suite Salon
+                    <span
+                      class="material-symbols-outlined text-brand-accent text-sm fill"
+                      >verified</span
+                    >
+                  </p>
+                  <p class="text-[10px] text-brand-gray/60">
+                    Opening Night • Dolby Atmos Cinema
+                  </p>
+                </div>
+              </div>
+              <button class="text-brand-gray/60 hover:text-brand-white">
+                <span class="material-symbols-outlined text-lg"
+                  >more_horiz</span
+                >
+              </button>
+            </div>
+
+            <div
+              class="relative rounded-2xl overflow-hidden aspect-[4/5] mb-3 group cursor-pointer"
+              onclick="
+                openBookingModal(
+                  'Challengers: Private Screening',
+                  'Dolby Cinema',
+                  '$50.00',
+                )
+              "
+            >
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXFRob8skOEemrO-BdQ9qJZDlLlTfl7qdbvV4Z_MCriwuiEVbZvRQ_mYgE&s=10"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                alt="Challengers"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-black/20"
+              ></div>
+
+              <div
+                class="absolute top-4 right-4 bg-brand-black/60 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-semibold text-brand-white border border-brand-gray/20"
+              >
+                VALENTINE'S PREVIEW
+              </div>
+
+              <div class="absolute bottom-4 left-4 right-4">
+                <span
+                  class="text-xs tracking-widest text-brand-accent uppercase font-medium"
+                  >Luca Guadagnino</span
+                >
+                <h2
+                  class="text-2xl font-serif text-brand-white font-normal mt-0.5"
+                >
+                  Challengers
+                </h2>
+                <p class="text-xs text-brand-gray/80 mt-1 line-clamp-2">
+                  Paired with our artisanal 3-course tapas and signature
+                  cocktail selection.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-3">
+              <div class="flex items-center gap-4 text-brand-gray">
+                <button
+                  onclick="toggleLike(this)"
+                  class="flex items-center gap-1 hover:text-brand-accent transition-colors"
+                >
+                  <span class="material-symbols-outlined text-2xl icon-heart"
+                    >favorite_border</span
+                  >
+                  <span class="text-xs font-medium text-count">2.1k</span>
+                </button>
+                <button
+                  onclick="openComments('Challengers')"
+                  class="flex items-center gap-1 hover:text-brand-white transition-colors"
+                >
+                  <span class="material-symbols-outlined text-2xl"
+                    >chat_bubble_outline</span
+                  >
+                  <span class="text-xs font-medium">112</span>
+                </button>
+                <button
+                  onclick="shareMovie('Challengers')"
+                  class="hover:text-brand-white transition-colors"
+                >
+                  <span class="material-symbols-outlined text-2xl">send</span>
+                </button>
+              </div>
+
+              <button
+                onclick="
+                  openBookingModal(
+                    'Challengers: Private Screening',
+                    'Dolby Cinema',
+                    '$50.00',
+                  )
+                "
+                class="bg-brand-accent text-brand-black px-5 py-2.5 rounded-full font-semibold text-xs tracking-wide uppercase hover:bg-yellow-400 transition-all shadow-lg shadow-brand-accent/10 flex items-center gap-1.5 active:scale-95"
+              >
+                <span>Reserve Suite</span>
+                <span class="material-symbols-outlined text-sm"
+                  >arrow_forward</span
+                >
+              </button>
+            </div>
+          </article>
+        </div>
+
+        <!-- TAB CONTENT: EXPERIENCE / SUITES -->
+        <div id="tab-experience" class="tab-content hidden p-4 space-y-6">
+          <div class="text-center py-4">
+            <span class="text-xs tracking-[0.3em] text-brand-accent uppercase"
+              >Unrivaled Opulence</span
+            >
+            <h2 class="text-2xl font-serif text-brand-white mt-1">
+              The Lumière Experience
+            </h2>
+            <p class="text-xs text-brand-gray/70 mt-2 max-w-xs mx-auto">
+              Reinventing motion picture viewing through bespoke luxury and
+              privacy.
+            </p>
+          </div>
+
+          <!-- Experience Card 1 -->
+          <div
+            class="glass-card rounded-2xl p-5 border border-brand-navy/60 space-y-3"
+          >
+            <div class="h-44 rounded-xl overflow-hidden relative">
+              <img
+                src="https://images.unsplash.com/photo-1586882829491-b81178aa622e?q=80&w=600&auto=format&fit=crop"
+                class="w-full h-full object-cover"
+                alt="VIP Pods"
+              />
+              <span
+                class="absolute top-3 left-3 bg-brand-black/80 text-brand-accent text-[10px] tracking-widest uppercase px-3 py-1 rounded-full font-semibold border border-brand-accent/30"
+                >First Class</span
+              >
+            </div>
+            <h3 class="text-lg font-serif text-brand-white">
+              Private Leather Pods
+            </h3>
+            <p class="text-xs text-brand-gray/80 leading-relaxed">
+              Fully motorized leather recliners featuring heated cushions,
+              wireless device charging, and personal waiter call buttons.
+            </p>
+          </div>
+
+          <!-- Experience Card 2 -->
+          <div
+            class="glass-card rounded-2xl p-5 border border-brand-navy/60 space-y-3"
+          >
+            <div class="h-44 rounded-xl overflow-hidden relative">
+              <img
+                src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?q=80&w=600&auto=format&fit=crop"
+                class="w-full h-full object-cover"
+                alt="Sommelier"
+              />
+              <span
+                class="absolute top-3 left-3 bg-brand-black/80 text-brand-accent text-[10px] tracking-widest uppercase px-3 py-1 rounded-full font-semibold border border-brand-accent/30"
+                >In-Seat Service</span
+              >
+            </div>
+            <h3 class="text-lg font-serif text-brand-white">
+              Gourmet & Mixology
+            </h3>
+            <p class="text-xs text-brand-gray/80 leading-relaxed">
+              Curated by Michelin-starred chefs. Order fine wines, truffle
+              popcorn, and artisan cocktails delivered silently during
+              screening.
+            </p>
+          </div>
+        </div>
+
+        <!-- TAB CONTENT: MEMBER PROFILE -->
+        <div id="tab-profile" class="tab-content hidden p-4 space-y-6">
+          <div
+            class="glass-card rounded-3xl p-6 border border-brand-accent/30 relative overflow-hidden"
+          >
+            <div
+              class="absolute -right-8 -bottom-8 w-32 h-32 bg-brand-accent/10 rounded-full blur-2xl"
+            ></div>
+
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-14 h-14 rounded-full bg-gradient-to-tr from-brand-navy to-brand-accent p-0.5"
+                >
+                  <div
+                    class="w-full h-full bg-brand-black rounded-full flex items-center justify-center font-serif text-lg text-brand-accent"
+                  >
+                    JS
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold text-brand-white">
+                    Miguel Rivero
+                  </h3>
+                  <span
+                    class="text-[10px] tracking-widest text-brand-accent uppercase bg-brand-accent/10 px-2.5 py-0.5 rounded-full border border-brand-accent/30"
+                    >Black Card Member</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="grid grid-cols-2 gap-4 border-t border-brand-navy/60 pt-4 text-center"
+            >
+              <div>
+                <p
+                  class="text-[10px] text-brand-gray/60 uppercase tracking-wider"
+                >
+                  Passes Remaining
+                </p>
+                <p class="text-xl font-bold text-brand-white mt-1">12 VIP</p>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] text-brand-gray/60 uppercase tracking-wider"
+                >
+                  Lumière Points
+                </p>
+                <p class="text-xl font-bold text-brand-accent mt-1">14,850</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <h4
+              class="text-xs font-semibold text-brand-gray/70 uppercase tracking-widest"
+            >
+              Upcoming Bookings
+            </h4>
+            <div
+              class="glass-card p-4 rounded-2xl flex items-center justify-between"
+            >
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-brand-accent"
+                  >confirmation_number</span
+                >
+                <div>
+                  <p class="text-xs font-semibold text-brand-white">
+                    Oppenheimer: Directors Cut
+                  </p>
+                  <p class="text-[10px] text-brand-gray/60">
+                    Tonight • 20:30 • Screen 01 (Suite 4C, 4D)
+                  </p>
+                </div>
+              </div>
+              <span class="material-symbols-outlined text-brand-gray/60 text-sm"
+                >chevron_right</span
+              >
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Social Media Bottom Navigation Bar -->
+      <nav
+        class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md z-40 glass-nav border-t border-brand-navy/40 px-6 py-3 flex items-center justify-between"
+      >
+        <button
+          onclick="switchTab('movies')"
+          id="nav-movies"
+          class="nav-btn flex flex-col items-center gap-1 text-brand-accent"
+        >
+          <span class="material-symbols-outlined text-xl">movie</span>
+          <span class="text-[9px] font-medium tracking-wider uppercase"
+            >Films</span
+          >
+        </button>
+
+        <button
+          onclick="switchTab('experience')"
+          id="nav-experience"
+          class="nav-btn flex flex-col items-center gap-1 text-brand-gray hover:text-brand-white"
+        >
+          <span class="material-symbols-outlined text-xl">chair_alt</span>
+          <span class="text-[9px] font-medium tracking-wider uppercase"
+            >Suites</span
+          >
+        </button>
+
+        <!-- Center VIP Quick Booking Floating CTA -->
+        <button
+          onclick="
+            openBookingModal(
+              'Direct VIP Lounge Access',
+              'Private Salon',
+              '$60.00',
+            )
+          "
+          class="w-11 h-11 bg-brand-accent rounded-full text-brand-black flex items-center justify-center shadow-lg shadow-brand-accent/20 hover:scale-105 active:scale-95 transition-all"
+        >
+          <span class="material-symbols-outlined font-bold text-2xl">add</span>
+        </button>
+
+        <button
+          onclick="openCatering()"
+          id="nav-dining"
+          class="nav-btn flex flex-col items-center gap-1 text-brand-gray hover:text-brand-white"
+        >
+          <span class="material-symbols-outlined text-xl">wine_bar</span>
+          <span class="text-[9px] font-medium tracking-wider uppercase"
+            >Dining</span
+          >
+        </button>
+
+        <button
+          onclick="switchTab('profile')"
+          id="nav-profile"
+          class="nav-btn flex flex-col items-center gap-1 text-brand-gray hover:text-brand-white"
+        >
+          <span class="material-symbols-outlined text-xl">person</span>
+          <span class="text-[9px] font-medium tracking-wider uppercase"
+            >Member</span
+          >
+        </button>
+      </nav>
+
+      <!-- MODAL 1: VIP TICKET BOOKING & SEAT SELECTION -->
+      <div
+        id="bookingModal"
+        class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300 flex items-end sm:items-center justify-center"
+      >
+        <div
+          id="bookingModalContent"
+          class="w-full max-w-md bg-brand-black border-t sm:border border-brand-navy/60 rounded-t-3xl sm:rounded-3xl p-6 transform translate-y-full sm:translate-y-0 transition-transform duration-300 space-y-6 max-h-[90vh] overflow-y-auto"
+        >
+          <div
+            class="flex justify-between items-center border-b border-brand-navy/40 pb-4"
+          >
+            <div>
+              <span
+                class="text-[10px] tracking-widest text-brand-accent uppercase font-medium"
+                >VIP Reservation</span
+              >
+              <h3
+                id="modalMovieTitle"
+                class="text-xl font-serif text-brand-white"
+              >
+                Oppenheimer
+              </h3>
+            </div>
+            <button
+              onclick="closeBookingModal()"
+              class="p-2 rounded-full hover:bg-brand-navy text-brand-gray"
+            >
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <!-- Date & Showtime Picker -->
+          <div>
+            <label
+              class="text-[10px] text-brand-gray/60 uppercase tracking-widest block mb-2"
+              >Select Preferred Session</label
+            >
+            <div class="grid grid-cols-3 gap-2">
+              <button
+                onclick="selectTime(this)"
+                class="time-btn bg-brand-navy/40 border border-brand-accent text-brand-accent p-2.5 rounded-2xl text-center flex flex-col items-center"
+              >
+                <span class="text-xs font-bold">18:00</span>
+                <span class="text-[9px] text-brand-gray/60">Laser IMAX</span>
+              </button>
+              <button
+                onclick="selectTime(this)"
+                class="time-btn bg-brand-navy/20 border border-brand-navy text-brand-gray hover:border-brand-gray/40 p-2.5 rounded-2xl text-center flex flex-col items-center"
+              >
+                <span class="text-xs font-bold">20:45</span>
+                <span class="text-[9px] text-brand-gray/60">70mm Film</span>
+              </button>
+              <button
+                onclick="selectTime(this)"
+                class="time-btn bg-brand-navy/20 border border-brand-navy text-brand-gray hover:border-brand-gray/40 p-2.5 rounded-2xl text-center flex flex-col items-center"
+              >
+                <span class="text-xs font-bold">23:15</span>
+                <span class="text-[9px] text-brand-gray/60">VIP Midnight</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive Seat Picker (Minimalist Luxury Design) -->
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <label
+                class="text-[10px] text-brand-gray/60 uppercase tracking-widest"
+                >Select Recliner Suite</label
+              >
+              <span class="text-[10px] text-brand-accent"
+                >Screen Direction ↑</span
+              >
+            </div>
+
+            <div
+              class="bg-brand-navy/20 p-4 rounded-2xl border border-brand-navy/40 space-y-3"
+            >
+              <div
+                class="w-full h-1 bg-gradient-to-r from-transparent via-brand-accent to-transparent rounded-full opacity-50 mb-4"
+              ></div>
+
+              <div class="grid grid-cols-5 gap-2 text-center">
+                <!-- Seat items -->
+                <button
+                  onclick="toggleSeat(this)"
+                  class="seat p-2 bg-brand-navy/60 border border-brand-navy rounded-xl text-xs text-brand-gray hover:border-brand-accent transition-all"
+                >
+                  A1
+                </button>
+                <button
+                  onclick="toggleSeat(this)"
+                  class="seat p-2 bg-brand-navy/60 border border-brand-navy rounded-xl text-xs text-brand-gray hover:border-brand-accent transition-all"
+                >
+                  A2
+                </button>
+                <button
+                  class="seat p-2 bg-brand-navy/10 text-brand-gray/20 rounded-xl text-xs cursor-not-allowed"
+                  disabled
+                >
+                  A3
+                </button>
+                <button
+                  onclick="toggleSeat(this)"
+                  class="seat p-2 bg-brand-navy/60 border border-brand-navy rounded-xl text-xs text-brand-gray hover:border-brand-accent transition-all"
+                >
+                  A4
+                </button>
+                <button
+                  onclick="toggleSeat(this)"
+                  class="seat p-2 bg-brand-navy/60 border border-brand-navy rounded-xl text-xs text-brand-gray hover:border-brand-accent transition-all"
+                >
+                  A5
+                </button>
+
+                <button
+                  onclick="toggleSeat(this)"
+                  class="seat p-2 bg-brand-navy/60 border border-brand-navy rounded-xl text-xs text-brand-gray hover:border-brand-accent transition-all"
+                >
+                  B1
+                </button>
+                <button
+                  onclick="toggleSeat(this)"
+                  class="seat p-2 bg-brand-accent text-brand-black font-bold rounded-xl text-xs border border-brand-accent shadow-md shadow-brand-accent/20"
+                >
+                  B2
+                </button>
+                <button
+                  onclick="toggleSeat(this)"
+                  class="seat p-2 bg-brand-accent text-brand-black font-bold rounded-xl text-xs border border-brand-accent shadow-md shadow-brand-accent/20"
+                >
+                  B3
+                </button>
+                <button
+                  onclick="toggleSeat(this)"
+                  class="seat p-2 bg-brand-navy/60 border border-brand-navy rounded-xl text-xs text-brand-gray hover:border-brand-accent transition-all"
+                >
+                  B4
+                </button>
+                <button
+                  onclick="toggleSeat(this)"
+                  class="seat p-2 bg-brand-navy/60 border border-brand-navy rounded-xl text-xs text-brand-gray hover:border-brand-accent transition-all"
+                >
+                  B5
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Dining Addon Toggle -->
+          <div
+            class="glass-card p-3 rounded-2xl flex items-center justify-between"
+          >
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-brand-accent"
+                >wine_bar</span
+              >
+              <div>
+                <p class="text-xs font-medium text-brand-white">
+                  Dom Pérignon Service
+                </p>
+                <p class="text-[10px] text-brand-gray/60">
+                  Chilled bottle delivered to suite (+ $180)
+                </p>
+              </div>
+            </div>
+            <input
+              type="checkbox"
+              class="w-4 h-4 accent-brand-accent rounded cursor-pointer"
+            />
+          </div>
+
+          <!-- Checkout Action Button -->
+          <button
+            onclick="confirmBooking()"
+            class="w-full bg-brand-accent text-brand-black py-3.5 rounded-full font-bold text-xs tracking-widest uppercase hover:bg-yellow-400 transition-all shadow-xl shadow-brand-accent/20 flex items-center justify-center gap-2 active:scale-95"
+          >
+            <span class="material-symbols-outlined text-base">lock</span>
+            <span>Confirm Pass • $90.00</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- MODAL 2: FULLSCREEN STORY VIEWER -->
+      <div
+        id="storyModal"
+        class="fixed inset-0 z-50 bg-black opacity-0 pointer-events-none transition-all duration-300 flex flex-col justify-between p-4"
+      >
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-800 h-1 rounded-full overflow-hidden mt-2">
+          <div
+            id="storyProgress"
+            class="bg-brand-accent h-full w-0 transition-all duration-100"
+          ></div>
+        </div>
+
+        <div class="flex justify-between items-center z-10 pt-2">
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 rounded-full bg-brand-accent text-brand-black flex items-center justify-center font-bold text-xs"
+            >
+              L
+            </div>
+            <div>
+              <p id="storyTitle" class="text-xs font-bold text-brand-white">
+                Premiere Night
+              </p>
+              <p id="storySub" class="text-[10px] text-brand-gray/80">
+                Exclusive Preview
+              </p>
+            </div>
+          </div>
+          <button onclick="closeStory()" class="p-2 text-brand-white">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div
+          class="relative flex-1 my-4 rounded-2xl overflow-hidden flex items-center justify-center"
+        >
+          <img
+            id="storyImage"
+            src=""
+            class="absolute inset-0 w-full h-full object-cover"
+            alt="Story"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"
+          ></div>
+          <p
+            id="storyCaption"
+            class="absolute bottom-6 left-6 right-6 text-sm text-brand-white font-serif italic text-center"
+          ></p>
+        </div>
+
+        <button
+          onclick="
+            closeStory();
+            openBookingModal('Exclusive Premiere', 'VIP Lounge', '$120.00');
+          "
+          class="w-full bg-brand-accent text-brand-black py-3 rounded-full font-bold text-xs uppercase tracking-widest text-center"
+        >
+          Inquire Availability
+        </button>
+      </div>
+
+      <!-- MODAL 3: CONCIERGE / DM CHAT -->
+      <div
+        id="conciergeModal"
+        class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300 flex items-end justify-center"
+      >
+        <div
+          class="w-full max-w-md bg-brand-black border-t border-brand-navy/60 rounded-t-3xl p-5 space-y-4 h-[75vh] flex flex-col justify-between"
+        >
+          <div
+            class="flex justify-between items-center border-b border-brand-navy/40 pb-3"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="w-3 h-3 bg-green-500 rounded-full animate-pulse"
+              ></div>
+              <div>
+                <h3 class="text-sm font-semibold text-brand-white">
+                  Lumière VIP Concierge
+                </h3>
+                <p class="text-[10px] text-brand-gray/60">
+                  Active • Average response &lt; 2 mins
+                </p>
+              </div>
+            </div>
+            <button
+              onclick="closeConcierge()"
+              class="p-2 text-brand-gray hover:text-brand-white"
+            >
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+
+          <div class="flex-1 overflow-y-auto space-y-3 py-2 text-xs">
+            <div
+              class="bg-brand-navy/40 border border-brand-navy/60 text-brand-gray p-3 rounded-2xl max-w-[80%]"
+            >
+              Good evening, Mr. Sterling. How may our concierge team assist your
+              private screening experience tonight?
+            </div>
+          </div>
+
+          <div
+            class="flex items-center gap-2 pt-2 border-t border-brand-navy/40"
+          >
+            <input
+              type="text"
+              placeholder="Request private screening, valet, or sommelier..."
+              class="flex-1 bg-brand-navy/30 border border-brand-navy/60 rounded-full px-4 py-2.5 text-xs text-brand-white focus:outline-none focus:border-brand-accent"
+            />
+            <button
+              onclick="sendChatMessage()"
+              class="w-10 h-10 bg-brand-accent text-brand-black rounded-full flex items-center justify-center"
+            >
+              <span class="material-symbols-outlined text-sm">send</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUCCESS TOAST NOTIFICATION -->
+      <div
+        id="toast"
+        class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-brand-white text-brand-black px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow-2xl transition-all duration-300 transform -translate-y-20 opacity-0 flex items-center gap-2"
+      >
+        <span class="material-symbols-outlined text-brand-accent fill"
+          >check_circle</span
+        >
+        <span id="toastMessage">Reservation Confirmed</span>
+      </div>
+    </div>
+
+    <script>
+      /* Menu Overlay Controls */
+      function toggleMenu() {
+        const menu = document.getElementById("sideMenu");
+        const content = document.getElementById("sideMenuContent");
+
+        if (menu.classList.contains("opacity-0")) {
+          menu.classList.remove("opacity-0", "pointer-events-none");
+          content.classList.remove("translate-x-full");
+        } else {
+          menu.classList.add("opacity-0", "pointer-events-none");
+          content.classList.add("translate-x-full");
+        }
+      }
+
+      /* Tab Switching Logic */
+      function switchTab(tabName) {
+        // Hide all contents
+        document
+          .querySelectorAll(".tab-content")
+          .forEach((tab) => tab.classList.add("hidden"));
+
+        // Reset bottom nav active styles
+        document.querySelectorAll(".nav-btn").forEach((btn) => {
+          btn.classList.remove("text-brand-accent");
+          btn.classList.add("text-brand-gray");
+        });
+
+        // Show selected content & update button
+        const targetTab = document.getElementById(`tab-${tabName}`);
+        const targetNav = document.getElementById(`nav-${tabName}`);
+
+        if (targetTab) targetTab.classList.remove("hidden");
+        if (targetNav) {
+          targetNav.classList.remove("text-brand-gray");
+          targetNav.classList.add("text-brand-accent");
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      /* Social Like Toggle Effect */
+      function toggleLike(btn) {
+        const icon = btn.querySelector(".icon-heart");
+        const countEl = btn.querySelector(".text-count");
+        let count = parseFloat(countEl.innerText);
+
+        if (icon.classList.contains("fill")) {
+          icon.classList.remove("fill", "text-brand-accent");
+          icon.innerText = "favorite_border";
+          countEl.innerText = (count - 0.1).toFixed(1) + "k";
+        } else {
+          icon.classList.add("fill", "text-brand-accent");
+          icon.innerText = "favorite";
+          countEl.innerText = (count + 0.1).toFixed(1) + "k";
+          showToast("Added to Saved Screenings");
+        }
+      }
+
+      /* Booking Modal Management */
+      function openBookingModal(title, format, price) {
+        document.getElementById("modalMovieTitle").innerText = title;
+        const modal = document.getElementById("bookingModal");
+        const content = document.getElementById("bookingModalContent");
+
+        modal.classList.remove("opacity-0", "pointer-events-none");
+        content.classList.remove("translate-y-full");
+      }
+
+      function closeBookingModal() {
+        const modal = document.getElementById("bookingModal");
+        const content = document.getElementById("bookingModalContent");
+
+        modal.classList.add("opacity-0", "pointer-events-none");
+        content.classList.add("translate-y-full");
+      }
+
+      function toggleSeat(seatBtn) {
+        if (seatBtn.classList.contains("bg-brand-accent")) {
+          seatBtn.classList.remove(
+            "bg-brand-accent",
+            "text-brand-black",
+            "font-bold",
+          );
+          seatBtn.classList.add("bg-brand-navy/60", "text-brand-gray");
+        } else {
+          seatBtn.classList.remove("bg-brand-navy/60", "text-brand-gray");
+          seatBtn.classList.add(
+            "bg-brand-accent",
+            "text-brand-black",
+            "font-bold",
+          );
+        }
+      }
+
+      function selectTime(btn) {
+        document.querySelectorAll(".time-btn").forEach((b) => {
+          b.classList.remove(
+            "border-brand-accent",
+            "text-brand-accent",
+            "bg-brand-navy/40",
+          );
+          b.classList.add(
+            "border-brand-navy",
+            "text-brand-gray",
+            "bg-brand-navy/20",
+          );
+        });
+        btn.classList.remove(
+          "border-brand-navy",
+          "text-brand-gray",
+          "bg-brand-navy/20",
+        );
+        btn.classList.add(
+          "border-brand-accent",
+          "text-brand-accent",
+          "bg-brand-navy/40",
+        );
+      }
+
+      function confirmBooking() {
+        closeBookingModal();
+        showToast("VIP Passes Added to Apple Wallet");
+      }
+
+      /* Social Story Logic */
+      let storyTimer;
+      function openStory(title, sub, imgUrl) {
+        const modal = document.getElementById("storyModal");
+        document.getElementById("storyTitle").innerText = title;
+        document.getElementById("storySub").innerText = sub;
+        document.getElementById("storyImage").src = imgUrl;
+
+        modal.classList.remove("opacity-0", "pointer-events-none");
+
+        const progressBar = document.getElementById("storyProgress");
+        progressBar.style.width = "0%";
+
+        let progress = 0;
+        clearInterval(storyTimer);
+        storyTimer = setInterval(() => {
+          progress += 2;
+          progressBar.style.width = progress + "%";
+          if (progress >= 100) {
+            clearInterval(storyTimer);
+            closeStory();
+          }
+        }, 100);
+      }
+
+      function closeStory() {
+        clearInterval(storyTimer);
+        const modal = document.getElementById("storyModal");
+        modal.classList.add("opacity-0", "pointer-events-none");
+      }
+
+      /* Concierge Chat Modal */
+      function openConcierge() {
+        const modal = document.getElementById("conciergeModal");
+        modal.classList.remove("opacity-0", "pointer-events-none");
+      }
+
+      function closeConcierge() {
+        const modal = document.getElementById("conciergeModal");
+        modal.classList.add("opacity-0", "pointer-events-none");
+      }
+
+      function sendChatMessage() {
+        showToast("Concierge Notified");
+        closeConcierge();
+      }
+
+      function openCatering() {
+        showToast("Sommelier Menu Sent to Email");
+      }
+
+      function openComments(title) {
+        showToast(`Loading VIP Discussions for ${title}`);
+      }
+
+      function shareMovie(title) {
+        showToast(`VIP Invite Link Copied`);
+      }
+
+      /* Toast Notification Helper */
+      function showToast(msg) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toastMessage").innerText = msg;
+
+        toast.classList.remove("-translate-y-20", "opacity-0");
+        toast.classList.add("translate-y-0", "opacity-100");
+
+        setTimeout(() => {
+          toast.classList.remove("translate-y-0", "opacity-100");
+          toast.classList.add("-translate-y-20", "opacity-0");
+        }, 2500);
+      }
+    </script>
+  </body>
+</html>
